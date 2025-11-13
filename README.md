@@ -1,11 +1,21 @@
-# 随机厄米矩阵特征值分析 / Random Hermitian Matrix Eigenvalue Analysis
+# Introduction to Tensor Network Methods / 张量网络方法导论
 
-这个项目实现了随机矩阵理论中的经典问题，研究随机厄米矩阵的特征值统计性质，特别是 **Wigner-Dyson 统计** 和 **能级排斥** 现象。
+这个项目实现了张量网络方法和量子多体物理中的经典问题，包括：
+1. 随机厄米矩阵特征值分析（**Wigner-Dyson 统计**和**能级排斥**）
+2. 量子多体物理习题（紧束缚哈密顿量、张量网络构造、规范不变希尔伯特空间、量子自旋冰模型）
 
-This project implements a classical problem in random matrix theory, studying the eigenvalue statistics of random Hermitian matrices, particularly **Wigner-Dyson statistics** and **level repulsion** phenomena.
+This project implements classical problems in tensor network methods and quantum many-body physics, including:
+1. Random Hermitian matrix eigenvalue analysis (**Wigner-Dyson statistics** and **level repulsion**)
+2. Quantum many-body physics exercises (tight-binding Hamiltonians, tensor networks, gauge-invariant Hilbert spaces, quantum spin ice)
 
 ## 目录 / Table of Contents
 
+### 量子多体物理习题 / Quantum Many-Body Physics Exercises
+- [习题描述](#习题描述--exercise-description)
+- [快速开始](#快速开始--quick-start)
+- [习题详解](#习题详解--exercise-details)
+
+### 随机厄米矩阵分析 / Random Hermitian Matrix Analysis
 - [问题描述](#问题描述--problem-description)
 - [功能特性](#功能特性--features)
 - [安装](#安装--installation)
@@ -14,7 +24,207 @@ This project implements a classical problem in random matrix theory, studying th
 - [结果示例](#结果示例--example-results)
 - [参考文献](#参考文献--references)
 
+---
+
+## 习题描述 / Exercise Description
+
+### 量子多体物理习题 / Quantum Many-Body Physics Exercises
+
+本项目包含四个量子多体物理习题的完整实现：
+
+This project includes complete implementations of four quantum many-body physics exercises:
+
+#### 习题 1 / Exercise 1: 紧束缚哈密顿量的对易关系 / Commutator Relations
+
+对于哈密顿量：
+
+$$H = -t \sum_i (c_i^\dagger c_{i+1} + c_{i+1}^\dagger c_i)$$
+
+**任务 / Tasks:**
+1. 验证 $[H, \hat{N}] = 0$（粒子数守恒）
+2. 寻找与 $\hat{N}$ 对易或不对易的其他算符
+3. 检验 $[G, H] = 0$（规范算符）
+
+**物理意义 / Physical Significance:**
+- 理解守恒量和对称性
+- 费米子算符的对易关系
+- 规范约束在量子系统中的作用
+
+#### 习题 2 / Exercise 2: 张量网络构造 / Tensor Network Construction
+
+明确写出方程 (6.10) 中的张量：
+
+$$S_{\alpha_2, \beta_1, \beta_2} = T_{\tau_2, \upsilon_1, \upsilon_2} \delta_{\ell_2 + m_1 + m_2, 0}$$
+
+**任务 / Tasks:**
+1. 明确构造两格点张量
+2. 推广到三个格点
+3. 使用矩阵乘积态 (MPS) 数值推广到 L 个格点
+
+**物理意义 / Physical Significance:**
+- 张量网络方法的基础
+- 规范约束的张量表示
+- 指数压缩和高效表示
+
+#### 习题 3 / Exercise 3: 规范不变希尔伯特空间维数 / Gauge Invariant Hilbert Space
+
+利用关系式 (6.26)：
+
+$$KP_{N'}|\psi\rangle = KPP_{N'}|\psi\rangle = KP_{N'}P|\psi\rangle = P_{N'}^G|\psi^G\rangle$$
+
+**任务 / Tasks:**
+数值计算一维自旋-1 系统规范不变希尔伯特空间的维数随格点数的变化
+
+**物理意义 / Physical Significance:**
+- 规范约束如何减少希尔伯特空间维数
+- 计算优势随系统尺寸的增长
+- 大规模量子模拟的关键
+
+#### 习题 4 / Exercise 4: 二维量子自旋冰模型 / 2D Quantum Spin Ice
+
+**任务 / Tasks:**
+计算二维量子自旋冰模型的算符 K 和 $P_{N'}$
+
+**物理意义 / Physical Significance:**
+- 阻挫磁性系统
+- 涌现规范理论
+- 拓扑序和新奇物态
+
+## 快速开始 / Quick Start
+
+### 运行所有习题 / Run All Exercises
+
+```bash
+# 运行主程序（包含所有四个习题）
+python quantum_many_body_exercises.py
+```
+
+输出包括 / Output includes:
+- 详细的数值结果和分析
+- 三个可视化图表：
+  - `exercise2_tensor_construction.png`
+  - `exercise3_gauge_invariant_dimension.png`
+  - `exercise4_spin_ice_lattice.png`
+
+### Jupyter Notebook 演示 / Jupyter Notebook Demo
+
+```bash
+# 启动交互式 notebook
+jupyter notebook quantum_many_body_exercises_demo.ipynb
+```
+
+这个 notebook 提供 / This notebook provides:
+- 详细的理论背景
+- 交互式代码单元
+- 完整的可视化
+- 物理解释和分析
+
+## 习题详解 / Exercise Details
+
+### 习题 1 实现要点 / Exercise 1 Implementation Highlights
+
+**核心类 / Core Class:** `TightBindingModel`
+
+```python
+from quantum_many_body_exercises import TightBindingModel
+
+# 创建 4 格点系统
+model = TightBindingModel(L=4, t=1.0, periodic=True)
+
+# 获取算符
+H = model.hamiltonian()
+N = model.total_number_operator()
+
+# 检验对易关系
+commutes = model.check_commutation(H, N, "H", "N")
+```
+
+**主要功能 / Key Features:**
+- Jordan-Wigner 变换实现费米子算符
+- 自动验证对易关系
+- 支持周期和开边界条件
+
+**结果 / Results:**
+✓ $[H, \hat{N}] = 0$ （粒子数守恒）
+✓ $[n_i, \hat{N}] = 0$ （局域数算符对易）
+✗ $[c_i, \hat{N}] \neq 0$ （产生/湮灭算符改变粒子数）
+
+### 习题 2 实现要点 / Exercise 2 Implementation Highlights
+
+**核心类 / Core Class:** `TensorNetworkConstructor`
+
+```python
+from quantum_many_body_exercises import TensorNetworkConstructor
+
+# 创建自旋-1 系统
+constructor = TensorNetworkConstructor(spin=1)
+
+# 构造两格点张量（带规范约束）
+T2 = constructor.create_simple_tensor(constraint_value=0)
+
+# 推广到 MPS
+mps = constructor.construct_mps_chain(L=10, bond_dim=4)
+```
+
+**压缩效果 / Compression Results:**
+- L=4: 压缩比 0.68
+- L=6: 压缩比 3.4
+- L=8: 压缩比 21
+- L=10: 压缩比 145（指数增长！）
+
+### 习题 3 实现要点 / Exercise 3 Implementation Highlights
+
+**核心类 / Core Class:** `GaugeInvariantHilbertSpace`
+
+```python
+from quantum_many_body_exercises import GaugeInvariantHilbertSpace
+
+# 创建自旋-1 系统
+calculator = GaugeInvariantHilbertSpace(spin=1)
+
+# 计算规范不变维数
+results = calculator.compute_dimensions_vs_L(L_max=8)
+```
+
+**关键发现 / Key Findings:**
+- 规范约束显著减少希尔伯特空间维数
+- 平均比例（规范/总）：~0.23
+- 计算优势随系统尺寸指数增长
+- 对大规模模拟至关重要
+
+### 习题 4 实现要点 / Exercise 4 Implementation Highlights
+
+**核心类 / Core Class:** `QuantumSpinIce2D`
+
+```python
+from quantum_many_body_exercises import QuantumSpinIce2D
+
+# 创建 4×4 晶格
+model = QuantumSpinIce2D(Lx=4, Ly=4)
+
+# 计算规范不变维数
+dim_gauge = model.compute_gauge_invariant_dimension()
+
+# 可视化晶格结构
+model.visualize_lattice()
+```
+
+**物理图像 / Physical Picture:**
+- 自旋位于格点间的连线上
+- 冰规则约束：每个方格周围自旋之和为零
+- 类似电磁学中的高斯定律 (div E = 0)
+- 涌现的规范理论结构
+
+**标度分析 / Scaling Analysis:**
+- 4×4 晶格：总维数 $2^{32}$，规范不变 $2^{24}$
+- 约束数 = (Lx-1) × (Ly-1)
+- 拓扑简并度取决于边界条件
+
+---
+
 ## 问题描述 / Problem Description
+
+### 随机厄米矩阵特征值分析 / Random Hermitian Matrix Eigenvalue Analysis
 
 ### 具体任务 / Tasks
 
@@ -244,20 +454,74 @@ N = 800 : 4.321098 ± 0.098765 秒
 ```
 Introduction-to-Tensor-Network-Methods/
 │
-├── hermitian_matrix_analysis.py    # 主程序（核心实现）
-├── hermitian_analysis_demo.ipynb   # Jupyter notebook 演示
-├── requirements.txt                # 依赖列表
-├── README.md                       # 本文件
+├── quantum_many_body_exercises.py       # 量子多体物理习题实现
+├── quantum_many_body_exercises_demo.ipynb  # 量子多体习题交互式演示
+├── hermitian_matrix_analysis.py         # 随机厄米矩阵分析（核心实现）
+├── hermitian_analysis_demo.ipynb        # 随机矩阵演示 notebook
+├── requirements.txt                     # 依赖列表
+├── README.md                            # 本文件
 │
-└── results/                        # 结果输出（可选）
-    ├── figures/                    # 图表
-    └── data/                       # 数据文件
+└── results/                             # 结果输出（可选）
+    ├── figures/                         # 图表
+    │   ├── exercise2_tensor_construction.png
+    │   ├── exercise3_gauge_invariant_dimension.png
+    │   └── exercise4_spin_ice_lattice.png
+    └── data/                            # 数据文件
 ```
 
 ### 主要类和函数 / Main Classes and Functions
 
-#### `HermitianMatrixAnalyzer` 类
+#### 量子多体物理模块 / Quantum Many-Body Physics Module
 
+**`TightBindingModel` 类** (习题 1)
+```python
+class TightBindingModel:
+    def __init__(self, L, t=1.0, periodic=True)
+    def creation_operator(site)
+    def annihilation_operator(site)
+    def hamiltonian()
+    def total_number_operator()
+    def gauge_operator(site)
+    def commutator(A, B)
+    def check_commutation(A, B, name_A, name_B)
+```
+
+**`TensorNetworkConstructor` 类** (习题 2)
+```python
+class TensorNetworkConstructor:
+    def __init__(self, spin=1)
+    def create_simple_tensor(constraint_value=0)
+    def extend_to_three_sites()
+    def construct_mps_tensor(bond_dim=2)
+    def construct_mps_chain(L, bond_dim=2)
+    def contract_mps(mps)
+```
+
+**`GaugeInvariantHilbertSpace` 类** (习题 3)
+```python
+class GaugeInvariantHilbertSpace:
+    def __init__(self, spin=1)
+    def generate_all_states(L)
+    def apply_gauge_constraint(states, constraint_type)
+    def count_gauge_invariant_dimension(L, constraint_type)
+    def compute_dimensions_vs_L(L_max, constraint_type)
+    def construct_projection_operator(L, constraint_type)
+```
+
+**`QuantumSpinIce2D` 类** (习题 4)
+```python
+class QuantumSpinIce2D:
+    def __init__(self, Lx, Ly)
+    def construct_gauge_constraint_operator()
+    def construct_particle_number_projector(N_target)
+    def construct_gauge_projector_K()
+    def compute_gauge_invariant_dimension()
+    def visualize_lattice()
+```
+
+#### 随机厄米矩阵模块 / Random Hermitian Matrix Module
+
+**`HermitianMatrixAnalyzer` 类**
 ```python
 class HermitianMatrixAnalyzer:
     def __init__(self, N, seed=None)
@@ -269,12 +533,13 @@ class HermitianMatrixAnalyzer:
     def poisson_distribution()
 ```
 
-#### 辅助函数
+#### 辅助函数 / Utility Functions
 
 - `analyze_lu_scaling()`: LU 分解标度分析
 - `plot_spacing_distribution()`: 绘制间距分布
 - `plot_lu_scaling()`: 绘制标度曲线
 - `compare_local_averaging_methods()`: 比较局部平均方法
+- `exercise_1_demo()`, `exercise_2_demo()`, `exercise_3_demo()`, `exercise_4_demo()`: 各习题演示函数
 
 ## 扩展功能 / Extensions
 
