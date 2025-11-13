@@ -1,0 +1,21 @@
+# 随机厄米矩阵特征值分析依赖
+# Random Hermitian Matrix Eigenvalue Analysis Dependencies
+
+# 核心科学计算库 / Core Scientific Computing
+numpy>=1.19.0
+scipy>=1.5.0
+
+# 可视化 / Visualization
+matplotlib>=3.3.0
+
+# Jupyter 支持（可选）/ Jupyter Support (Optional)
+jupyter>=1.0.0
+ipython>=7.16.0
+notebook>=6.1.0
+
+# 数据处理（可选）/ Data Processing (Optional)
+pandas>=1.1.0
+
+# 性能分析（可选）/ Performance Profiling (Optional)
+# line_profiler>=3.0.0
+# memory_profiler>=0.58.0
