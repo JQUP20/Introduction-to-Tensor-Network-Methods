@@ -384,3 +384,129 @@ This project implements an exercise problem from the Introduction to Tensor Netw
 **更多问题？** 请在 Issues 中提出！
 
 **More questions?** Please open an issue!
+
+---
+
+## 量子多体系统：平均场理论与重整化群 / Quantum Many-Body Systems: Mean Field Theory and Renormalization Group
+
+### 新增练习 / New Exercises
+
+本仓库现在包含量子多体系统的三个重要练习，涵盖平均场理论和重整化群方法。
+
+This repository now includes three important exercises on quantum many-body systems, covering mean field theory and renormalization group methods.
+
+### 练习内容 / Exercise Contents
+
+#### 练习 1: 横向场Ising模型的平均场近似 / Exercise 1: Mean Field Approximation for Transverse Field Ising Model
+
+**哈密顿量 / Hamiltonian:**
+```
+H = -∑ σᵢˣσᵢ₊₁ˣ + λ ∑ σᵢᶻ
+```
+
+**实现内容 / Implementation:**
+- 自洽方程求解 / Self-consistent equation solving
+- 序参数计算 / Order parameter calculation
+- 相变分析 / Phase transition analysis
+- 铁磁-顺磁相变识别 / Ferromagnetic-paramagnetic transition identification
+
+**关键结果 / Key Results:**
+- 平均场临界点：λc ≈ 2.0 / Mean field critical point: λc ≈ 2.0
+- 精确临界点：λc = 1.0 / Exact critical point: λc = 1.0
+- 平均场理论高估量子涨落效应 / Mean field theory overestimates quantum fluctuation effects
+
+#### 练习 2: 反铁磁Heisenberg模型的平均场近似 / Exercise 2: Mean Field Approximation for Antiferromagnetic Heisenberg Model
+
+**哈密顿量 / Hamiltonian:**
+```
+H = ∑ (σᵢˣσᵢ₊₁ˣ + σᵢʸσᵢ₊₁ʸ + σᵢᶻσᵢ₊₁ᶻ)
+```
+
+**实现内容 / Implementation:**
+- 交错平均场ansatz / Staggered mean field ansatz
+- Néel序参数计算 / Néel order parameter calculation
+- 子格对称性分析 / Sublattice symmetry analysis
+
+**关键结果 / Key Results:**
+- Néel序参数：m = 1.0 / Néel order parameter: m = 1.0
+- 基态能量密度：E/N = -1.0 / Ground state energy density: E/N = -1.0
+
+#### 练习 3: 重整化群方法 / Exercise 3: Renormalization Group Methods
+
+**方法比较 / Method Comparison:**
+
+| 方法 / Method | 精度 / Accuracy | 临界点 / Critical Point | 特点 / Features |
+|--------------|----------------|------------------------|----------------|
+| 平均场 / Mean Field | 低 / Low | λc ≈ 2.0 | 忽略量子涨落 / Ignores quantum fluctuations |
+| 实空间RG / Real-Space RG | 中 / Medium | λc ≈ 1.0 | 定性正确 / Qualitatively correct |
+| 精确对角化 / Exact Diagonalization | 高 / High | λc = 1.0 | 接近热力学极限 / Approaching thermodynamic limit |
+| 精确解 / Exact Solution | 精确 / Exact | λc = 1.0 | Jordan-Wigner变换 / Jordan-Wigner transformation |
+
+### 运行示例 / Running the Examples
+
+```bash
+# 运行量子多体系统练习
+python quantum_many_body_exercises.py
+```
+
+**输出内容 / Output Includes:**
+1. 三个练习的详细结果 / Detailed results for three exercises
+2. 不同方法的比较表格 / Comparison table of different methods
+3. 四幅对比图 / Four comparison plots:
+   - 基态能量密度比较 / Ground state energy density comparison
+   - 平均场序参数 / Mean field order parameter
+   - 相对误差分析 / Relative error analysis
+   - 能量差异 / Energy differences
+
+### 主要发现 / Key Findings
+
+1. **量子涨落的重要性 / Importance of Quantum Fluctuations**
+   - 平均场理论严重高估1D系统的临界点 / Mean field theory severely overestimates critical points in 1D systems
+   - 量子涨落在低维系统中至关重要 / Quantum fluctuations are crucial in low-dimensional systems
+
+2. **方法精度 / Method Accuracy**
+   - 精确对角化与热力学极限高度一致 / Exact diagonalization highly consistent with thermodynamic limit
+   - 实空间RG捕捉定性行为 / Real-space RG captures qualitative behavior
+   - 平均场适用于高维或长程相互作用 / Mean field suitable for high dimensions or long-range interactions
+
+3. **相变性质 / Phase Transition Properties**
+   - 横向场Ising模型在λc=1处存在量子相变 / Transverse field Ising model has quantum phase transition at λc=1
+   - 能级排斥在临界点附近增强 / Level repulsion enhanced near critical point
+
+### 代码结构 / Code Structure
+
+```python
+quantum_many_body_exercises.py
+├── TransverseFieldIsingMeanField      # 横向场Ising平均场
+├── HeisenbergAFMeanField               # Heisenberg反铁磁平均场
+├── RealSpaceRG                         # 实空间重整化群
+├── SimplifiedDMRG                      # 简化的DMRG（精确对角化）
+└── Exact Solution (Jordan-Wigner)      # 精确解
+```
+
+### 理论参考 / Theoretical References
+
+1. Sachdev, S. (2011). *Quantum Phase Transitions*. Cambridge University Press.
+2. Schollwöck, U. (2011). "The density-matrix renormalization group in the age of matrix product states." *Annals of Physics*, 326(1), 96-192.
+3. Cardy, J. (1996). *Scaling and Renormalization in Statistical Physics*. Cambridge University Press.
+
+### 性能注意事项 / Performance Notes
+
+- 精确对角化计算复杂度：O(2^(3L)) / Exact diagonalization complexity: O(2^(3L))
+- 默认最大系统大小：L=12（4096维希尔伯特空间）/ Default maximum system size: L=12 (4096-dim Hilbert space)
+- 建议使用numpy/scipy优化版本 / Recommended to use optimized numpy/scipy
+
+---
+
+## 项目总览 / Project Overview
+
+本仓库包含两个主要部分 / This repository contains two major parts:
+
+1. **随机矩阵理论** / Random Matrix Theory
+   - 厄米矩阵特征值分析 / Hermitian matrix eigenvalue analysis
+   - Wigner-Dyson统计 / Wigner-Dyson statistics
+
+2. **量子多体系统** / Quantum Many-Body Systems
+   - 平均场理论 / Mean field theory
+   - 重整化群方法 / Renormalization group methods
+   - 精确对角化 / Exact diagonalization
