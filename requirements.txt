@@ -1,5 +1,6 @@
 # 随机厄米矩阵特征值分析依赖
 # Random Hermitian Matrix Eigenvalue Analysis Dependencies
+# Tensor Network Methods Dependencies
 
 # 核心科学计算库 / Core Scientific Computing
 numpy>=1.19.0
@@ -7,6 +8,9 @@ scipy>=1.5.0
 
 # 可视化 / Visualization
 matplotlib>=3.3.0
+
+# 进度条 / Progress bars
+tqdm>=4.50.0
 
 # Jupyter 支持（可选）/ Jupyter Support (Optional)
 jupyter>=1.0.0
