@@ -1,25 +1,13 @@
-# 张量网络方法导论 - 数值计算练习
-# Introduction to Tensor Network Methods - Numerical Computation Exercises
 
-这个项目实现了张量网络方法课程中的数值计算习题，包括：
-
-This project implements numerical computation exercises from the Tensor Network Methods course, including:
-
-1. **随机厄米矩阵特征值分析** - 研究随机矩阵理论中的 Wigner-Dyson 统计和能级排斥现象
-2. **量子谐振子数值计算** - 基态能量、特征值求解和含时演化的完整实现
-
----
-
-## 项目1: 随机厄米矩阵特征值分析
-## Project 1: Random Hermitian Matrix Eigenvalue Analysis
-
-研究随机厄米矩阵的特征值统计性质，特别是 **Wigner-Dyson 统计** 和 **能级排斥** 现象。
-
-Studying the eigenvalue statistics of random Hermitian matrices, particularly **Wigner-Dyson statistics** and **level repulsion** phenomena.
 
 ## 目录 / Table of Contents
 
+- [练习概览](#练习概览--exercises-overview)
 - [问题描述](#问题描述--problem-description)
+  - [练习 1: 随机厄米矩阵](#练习-1-随机厄米矩阵)
+  - [练习 2: 间距分布](#练习-2-间距分布)
+  - [练习 3: Ising 哈密顿量](#练习-3-ising-哈密顿量)
+- [快速开始](#快速开始--quick-start)
 - [功能特性](#功能特性--features)
 - [安装](#安装--installation)
 - [使用方法](#使用方法--usage)
@@ -27,9 +15,86 @@ Studying the eigenvalue statistics of random Hermitian matrices, particularly **
 - [结果示例](#结果示例--example-results)
 - [参考文献](#参考文献--references)
 
+## 练习概览 / Exercises Overview
+
+### 练习 1: 随机厄米矩阵特征值分析
+**文件**: `hermitian_matrix_analysis.py`
+
+研究随机厄米矩阵的基本性质：
+- LU 分解和计算复杂度分析
+- 矩阵对角化和特征值统计
+- 归一化间距计算
+- Wigner-Dyson 统计验证
+
+### 练习 2: 间距分布 P(s) 研究
+**文件**: `exercise2_spacing_distribution.py`
+
+深入研究特征值间距的统计分布：
+- 收集多个随机厄米矩阵的间距数据
+- 对角矩阵间距分布（泊松统计）
+- 拟合通用分布函数 P(s) = as^α exp(-bs^β)
+- 与随机矩阵理论预测比较（GOE, GUE, Poisson）
+
+**关键发现**:
+- 随机厄米矩阵 → Wigner-Dyson 统计（能级排斥）
+- 对角矩阵 → 泊松统计（无能级排斥）
+- 拟合参数与理论预测高度吻合
+
+### 练习 3: 横向场 Ising 模型
+**文件**: `exercise3_ising_hamiltonian.py`
+
+研究一维横向场 Ising 模型的量子相变：
+- 构造哈密顿量 H^λ = -∑ᵢ σᵢˣσᵢ₊₁ˣ + λ ∑ᵢ σᵢᶻ
+- 对不同系统大小 N 和场强 λ 对角化
+- 绘制能级图和能隙分析
+- 研究量子相变 (λ ≈ 1)
+
+**物理现象**:
+- 量子相变：λ < 1 (铁磁相) ↔ λ > 1 (顺磁相)
+- 能级交叉/避免交叉
+- 能隙关闭
+- 有限尺寸效应
+
+### 运行所有练习
+**文件**: `run_all_exercises.py`
+
+一键运行所有练习并生成完整报告：
+```bash
+python run_all_exercises.py
+```
+
+生成的输出：
+- `exercise2_spacing_distribution.png` - 间距分布分析
+- `exercise3_energy_spectrum.png` - Ising 模型能级图
+- `exercise3_energy_gaps.png` - 能隙分析
+
+## 快速开始 / Quick Start
+
+### 安装依赖
+```bash
+pip install numpy scipy matplotlib
+```
+
+### 运行所有练习
+```bash
+python run_all_exercises.py
+```
+
+### 单独运行练习
+```bash
+# 练习 1: 随机厄米矩阵
+python hermitian_matrix_analysis.py
+
+# 练习 2: 间距分布
+python exercise2_spacing_distribution.py
+
+# 练习 3: Ising 模型
+python exercise3_ising_hamiltonian.py
+```
+
 ## 问题描述 / Problem Description
 
-### 具体任务 / Tasks
+### 练习 1: 随机厄米矩阵
 
 #### a. LU分解和标度分析 / LU Decomposition and Scaling Analysis
 - 初始化大小为 N 的随机厄米矩阵 A
@@ -257,19 +322,26 @@ N = 800 : 4.321098 ± 0.098765 秒
 ```
 Introduction-to-Tensor-Network-Methods/
 │
-├── hermitian_matrix_analysis.py    # 主程序（核心实现）
-├── hermitian_analysis_demo.ipynb   # Jupyter notebook 演示
-├── requirements.txt                # 依赖列表
-├── README.md                       # 本文件
+├── hermitian_matrix_analysis.py       # 练习 1: 随机厄米矩阵分析
+├── exercise2_spacing_distribution.py  # 练习 2: 间距分布研究
+├── exercise3_ising_hamiltonian.py     # 练习 3: Ising 模型
+├── run_all_exercises.py               # 运行所有练习
+├── example_simple.py                  # 简单示例
 │
-└── results/                        # 结果输出（可选）
-    ├── figures/                    # 图表
-    └── data/                       # 数据文件
+├── hermitian_analysis_demo.ipynb      # Jupyter notebook 演示
+├── requirements.txt                   # 依赖列表
+├── README.md                          # 本文件
+├── .gitignore                         # Git 忽略文件
+│
+└── 生成的输出文件:
+    ├── exercise2_spacing_distribution.png  # 间距分布图
+    ├── exercise3_energy_spectrum.png       # Ising 能级图
+    └── exercise3_energy_gaps.png           # 能隙分析图
 ```
 
 ### 主要类和函数 / Main Classes and Functions
 
-#### `HermitianMatrixAnalyzer` 类
+#### 练习 1: `HermitianMatrixAnalyzer` 类
 
 ```python
 class HermitianMatrixAnalyzer:
@@ -282,29 +354,84 @@ class HermitianMatrixAnalyzer:
     def poisson_distribution()
 ```
 
+#### 练习 2: `SpacingDistributionAnalyzer` 类
+
+```python
+class SpacingDistributionAnalyzer:
+    def __init__(self, seed=None)
+    def collect_hermitian_spacings(N_values, num_matrices)
+    def collect_diagonal_spacings(N_values, num_matrices)
+    def fit_spacing_distribution(spacings, initial_guess)
+    def compare_with_theory(spacings, theory_type)
+
+    # 静态方法
+    @staticmethod
+    def general_spacing_distribution(s, a, alpha, b, beta)
+    @staticmethod
+    def goe_distribution(s)
+    @staticmethod
+    def gue_distribution(s)
+    @staticmethod
+    def poisson_distribution(s)
+```
+
+#### 练习 3: `IsingHamiltonianAnalyzer` 类
+
+```python
+class IsingHamiltonianAnalyzer:
+    def __init__(self, N)
+    def construct_hamiltonian_dense(lambda_field)
+    def construct_hamiltonian_sparse_efficient(lambda_field)
+    def diagonalize(use_sparse=False, k=None)
+
+    # 辅助方法
+    def tensor_product(matrices)
+    def construct_sigma_x_i(i)
+    def construct_sigma_z_i(i)
+    def construct_sigma_x_i_sigma_x_j(i, j)
+```
+
 #### 辅助函数
 
+**练习 1**:
 - `analyze_lu_scaling()`: LU 分解标度分析
 - `plot_spacing_distribution()`: 绘制间距分布
 - `plot_lu_scaling()`: 绘制标度曲线
 - `compare_local_averaging_methods()`: 比较局部平均方法
 
+**练习 2**:
+- `plot_spacing_comparison()`: 综合间距分布比较
+- `print_fit_results()`: 打印拟合结果
+
+**练习 3**:
+- `compute_energy_spectrum()`: 计算能谱
+- `plot_energy_spectrum()`: 绘制能级图
+- `plot_energy_gaps()`: 绘制能隙
+- `analyze_phase_transition()`: 分析相变
+
 ## 扩展功能 / Extensions
 
 ### 已实现 / Implemented
 
-- ✅ 多种系综支持（GOE, GUE, GSE）
+- ✅ 练习 1: 随机厄米矩阵特征值分析
+- ✅ 练习 2: 间距分布 P(s) 研究
+- ✅ 练习 3: 横向场 Ising 模型
+- ✅ 多种系综支持（GOE, GUE, Poisson）
 - ✅ 局部平均归一化
+- ✅ 通用分布拟合 P(s) = as^α exp(-bs^β)
+- ✅ 量子相变分析
+- ✅ 稀疏矩阵支持（Ising 模型）
 - ✅ 完整的可视化工具
 - ✅ 性能优化
 
 ### 计划中 / Planned
 
+- ⬜ 练习 4: Ising 模型的间距分布分析
 - ⬜ 其他统计量（数量方差、谱刚度等）
-- ⬜ 稀疏矩阵支持
+- ⬜ 更大系统的 Ising 模型（N > 10）
 - ⬜ 并行计算
 - ⬜ GPU 加速
-- ⬜ 更多物理系统的应用示例
+- ⬜ 其他量子自旋模型（XXZ, Heisenberg）
 
 ## 参考文献 / References
 
