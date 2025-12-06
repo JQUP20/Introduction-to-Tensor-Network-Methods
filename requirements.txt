@@ -1,6 +1,5 @@
-# 随机厄米矩阵特征值分析依赖
-# Random Hermitian Matrix Eigenvalue Analysis Dependencies
-# Tensor Network Methods Dependencies
+# Introduction to Tensor Network Methods - Dependencies
+# 张量网络方法导论 - 依赖项
 
 # 核心科学计算库 / Core Scientific Computing
 numpy>=1.19.0
