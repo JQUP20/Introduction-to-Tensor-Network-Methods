@@ -376,126 +376,331 @@ This project implements an exercise problem from the Introduction to Tensor Netw
 
 ---
 
-## 量子多体系统：平均场理论与重整化群 / Quantum Many-Body Systems: Mean Field Theory and Renormalization Group
+# 横场伊辛模型 / Transverse Field Ising Model (TFIM)
 
-### 新增练习 / New Exercises
+## 概述 / Overview
 
-本仓库现在包含量子多体系统的三个重要练习，涵盖平均场理论和重整化群方法。
+本项目还包含了一维横场伊辛模型的张量网络实现，这是量子多体物理和张量网络方法的经典模型。
 
-This repository now includes three important exercises on quantum many-body systems, covering mean field theory and renormalization group methods.
+This project also includes a tensor network implementation of the one-dimensional transverse field Ising model (TFIM), a canonical model in quantum many-body physics and tensor network methods.
 
-### 练习内容 / Exercise Contents
+## 模型哈密顿量 / Model Hamiltonian
 
-#### 练习 1: 横向场Ising模型的平均场近似 / Exercise 1: Mean Field Approximation for Transverse Field Ising Model
+横场伊辛模型的哈密顿量为：
 
-**哈密顿量 / Hamiltonian:**
-```
-H = -∑ σᵢˣσᵢ₊₁ˣ + λ ∑ σᵢᶻ
-```
+The transverse field Ising model Hamiltonian is:
 
-**实现内容 / Implementation:**
-- 自洽方程求解 / Self-consistent equation solving
-- 序参数计算 / Order parameter calculation
-- 相变分析 / Phase transition analysis
-- 铁磁-顺磁相变识别 / Ferromagnetic-paramagnetic transition identification
+$$H = -J \sum_i \sigma_i^z \sigma_{i+1}^z - h \sum_i \sigma_i^x$$
 
-**关键结果 / Key Results:**
-- 平均场临界点：λc ≈ 2.0 / Mean field critical point: λc ≈ 2.0
-- 精确临界点：λc = 1.0 / Exact critical point: λc = 1.0
-- 平均场理论高估量子涨落效应 / Mean field theory overestimates quantum fluctuation effects
+其中 / where:
+- $J$ 是伊辛相互作用强度（本实现中设为 1）/ Ising coupling strength (set to 1 in this implementation)
+- $h$ 是横场强度 / transverse field strength
+- $\sigma^{x,z}$ 是泡利矩阵 / are Pauli matrices
 
-#### 练习 2: 反铁磁Heisenberg模型的平均场近似 / Exercise 2: Mean Field Approximation for Antiferromagnetic Heisenberg Model
+**量子相变** / Quantum Phase Transition:
+- $h < h_c$: 铁磁有序相 / Ferromagnetic ordered phase
+- $h = h_c = 1$: 临界点 / Critical point
+- $h > h_c$: 顺磁无序相 / Paramagnetic disordered phase
 
-**哈密顿量 / Hamiltonian:**
-```
-H = ∑ (σᵢˣσᵢ₊₁ˣ + σᵢʸσᵢ₊₁ʸ + σᵢᶻσᵢ₊₁ᶻ)
-```
+## 实现的方法 / Implemented Methods
 
-**实现内容 / Implementation:**
-- 交错平均场ansatz / Staggered mean field ansatz
-- Néel序参数计算 / Néel order parameter calculation
-- 子格对称性分析 / Sublattice symmetry analysis
+### 1. 精确对角化 / Exact Diagonalization
+- 构建完整哈密顿量矩阵
+- 使用稀疏矩阵加速（系统尺寸 L > 10）
+- 计算基态能量和波函数
+- 适用于小系统（L ≤ 14）
 
-**关键结果 / Key Results:**
-- Néel序参数：m = 1.0 / Néel order parameter: m = 1.0
-- 基态能量密度：E/N = -1.0 / Ground state energy density: E/N = -1.0
+### 2. 矩阵乘积态 (MPS) / Matrix Product States
+- MPS 表示：$|\psi\rangle = \sum_{s_1...s_L} A_1^{s_1} \cdots A_L^{s_L} |s_1...s_L\rangle$
+- 键维数截断控制精度
+- SVD 分解用于状态压缩
 
-#### 练习 3: 重整化群方法 / Exercise 3: Renormalization Group Methods
+### 3. 密度矩阵重整化群 (DMRG) / Density Matrix Renormalization Group
+- 有限尺寸 DMRG 算法
+- 双格点优化
+- 左右扫描收敛
+- 适用于中等系统（L ≤ 100）
 
-**方法比较 / Method Comparison:**
+### 4. 实空间重整化群 (RG) / Real-space Renormalization Group
+- 格点抽取方法
+- 有效耦合强度计算
+- 临界性质分析
 
-| 方法 / Method | 精度 / Accuracy | 临界点 / Critical Point | 特点 / Features |
-|--------------|----------------|------------------------|----------------|
-| 平均场 / Mean Field | 低 / Low | λc ≈ 2.0 | 忽略量子涨落 / Ignores quantum fluctuations |
-| 实空间RG / Real-Space RG | 中 / Medium | λc ≈ 1.0 | 定性正确 / Qualitatively correct |
-| 精确对角化 / Exact Diagonalization | 高 / High | λc = 1.0 | 接近热力学极限 / Approaching thermodynamic limit |
-| 精确解 / Exact Solution | 精确 / Exact | λc = 1.0 | Jordan-Wigner变换 / Jordan-Wigner transformation |
+## 三个主要任务 / Three Main Tasks
 
-### 运行示例 / Running the Examples
+### 任务 1: 平均场临界指数 (m=1) / Task 1: Mean Field Critical Exponents (m=1)
 
+使用键维数 m=1 的张量网络计算平均场临界指数并与解析预测比较。
+
+Compute mean field critical exponents using tensor networks with bond dimension m=1 and verify against analytical predictions.
+
+**运行 / Run:**
 ```bash
-# 运行量子多体系统练习
-python quantum_many_body_exercises.py
+python tfim_analysis.py
 ```
 
-**输出内容 / Output Includes:**
-1. 三个练习的详细结果 / Detailed results for three exercises
-2. 不同方法的比较表格 / Comparison table of different methods
-3. 四幅对比图 / Four comparison plots:
-   - 基态能量密度比较 / Ground state energy density comparison
-   - 平均场序参数 / Mean field order parameter
-   - 相对误差分析 / Relative error analysis
-   - 能量差异 / Energy differences
+**关键结果 / Key Results:**
+- 临界指数 β ≈ 0.5（平均场）/ Critical exponent β ≈ 0.5 (mean field)
+- 序参量标度：$m \sim |h - h_c|^\beta$ / Order parameter scaling
+- 输出图表：`task1_mean_field_exponents.png`
 
-### 主要发现 / Key Findings
+### 任务 2: 序参量计算方法比较 / Task 2: Order Parameter Comparison
 
-1. **量子涨落的重要性 / Importance of Quantum Fluctuations**
-   - 平均场理论严重高估1D系统的临界点 / Mean field theory severely overestimates critical points in 1D systems
-   - 量子涨落在低维系统中至关重要 / Quantum fluctuations are crucial in low-dimensional systems
+计算铁磁序参量并比较两种方法：直接计算和结构因子方法。
 
-2. **方法精度 / Method Accuracy**
-   - 精确对角化与热力学极限高度一致 / Exact diagonalization highly consistent with thermodynamic limit
-   - 实空间RG捕捉定性行为 / Real-space RG captures qualitative behavior
-   - 平均场适用于高维或长程相互作用 / Mean field suitable for high dimensions or long-range interactions
+Compute the ferromagnetic order parameter both directly and using the structure factor, then compare results.
 
-3. **相变性质 / Phase Transition Properties**
-   - 横向场Ising模型在λc=1处存在量子相变 / Transverse field Ising model has quantum phase transition at λc=1
-   - 能级排斥在临界点附近增强 / Level repulsion enhanced near critical point
+**两种方法 / Two Methods:**
 
-### 代码结构 / Code Structure
+1. **直接方法** / Direct Method:
+   $$m = \frac{1}{L} \sum_i \langle \sigma_i^z \rangle$$
+
+2. **结构因子方法** / Structure Factor Method:
+   $$S(q) = \frac{1}{L} \sum_{i,j} e^{iq(i-j)} \langle \sigma_i^z \sigma_j^z \rangle$$
+   $$m = \sqrt{S(q=0)/L}$$
+
+**输出图表** / Output: `task2_order_parameter_comparison.png`
+
+### 任务 3: 有限尺寸标度分析 / Task 3: Finite Size Scaling
+
+通过 RG 和 DMRG 方法进行有限尺寸标度分析，提取临界指数。
+
+Perform finite size scaling analysis using both RG and DMRG methods to extract critical exponents.
+
+**临界标度形式** / Critical Scaling Form:
+$$m(L, \delta h) = L^{-\beta/\nu} f(\delta h \cdot L^{1/\nu})$$
+
+其中 / where:
+- $\beta$ = 序参量临界指数 / order parameter exponent
+- $\nu$ = 关联长度指数 / correlation length exponent
+- $\delta h = h - h_c$ = 偏离临界点的距离 / distance from critical point
+
+**精确值（1D TFIM）** / Exact values (1D TFIM):
+- $\beta/\nu = 1/8 = 0.125$
+- $\nu = 1$
+
+**输出图表** / Output: `task3_finite_size_scaling.png`
+
+## 使用示例 / Usage Examples
+
+### 基本使用 / Basic Usage
 
 ```python
-quantum_many_body_exercises.py
-├── TransverseFieldIsingMeanField      # 横向场Ising平均场
-├── HeisenbergAFMeanField               # Heisenberg反铁磁平均场
-├── RealSpaceRG                         # 实空间重整化群
-├── SimplifiedDMRG                      # 简化的DMRG（精确对角化）
-└── Exact Solution (Jordan-Wigner)      # 精确解
+from ising_model_tfim import TFIMParameters, TransverseFieldIsingModel
+
+# 创建模型参数
+params = TFIMParameters(L=8, J=1.0, h=0.8, periodic=False)
+
+# 初始化模型
+tfim = TransverseFieldIsingModel(params)
+
+# 构建并对角化哈密顿量
+tfim.build_hamiltonian()
+eigenvalues, eigenvectors = tfim.diagonalize()
+
+# 计算物理量
+E0 = tfim.ground_state_energy()
+m = tfim.magnetization()
+
+print(f"Ground state energy: {E0:.6f}")
+print(f"Magnetization: {m:.6f}")
 ```
 
-### 理论参考 / Theoretical References
+### 相变扫描 / Phase Transition Scan
 
-1. Sachdev, S. (2011). *Quantum Phase Transitions*. Cambridge University Press.
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+h_values = np.linspace(0.5, 1.5, 30)
+magnetizations = []
+
+for h in h_values:
+    params = TFIMParameters(L=10, J=1.0, h=h)
+    tfim = TransverseFieldIsingModel(params)
+    tfim.build_hamiltonian()
+    tfim.diagonalize(k=1)
+    m = abs(tfim.magnetization())
+    magnetizations.append(m)
+
+plt.plot(h_values, magnetizations, 'o-')
+plt.axvline(1.0, color='r', linestyle='--', label='h_c=1')
+plt.xlabel('Transverse field h')
+plt.ylabel('Magnetization |m|')
+plt.legend()
+plt.show()
+```
+
+### 关联函数 / Correlation Functions
+
+```python
+# 计算自旋-自旋关联函数
+correlations = []
+for i in range(L):
+    corr = tfim.correlation_function(0, i)
+    correlations.append(corr)
+
+# 计算结构因子
+q_values, S_q = tfim.structure_factor()
+```
+
+### 运行完整分析 / Run Complete Analysis
+
+```bash
+# 运行所有三个任务的完整分析
+python tfim_analysis.py
+
+# 运行示例脚本
+python tfim_example.py
+```
+
+## 文件结构 / File Structure
+
+```
+Introduction-to-Tensor-Network-Methods/
+│
+├── hermitian_matrix_analysis.py    # 随机矩阵分析
+├── ising_model_tfim.py             # TFIM 核心实现 ★NEW★
+├── tfim_analysis.py                # 三个任务的完整分析 ★NEW★
+├── tfim_example.py                 # 使用示例 ★NEW★
+│
+├── task1_mean_field_exponents.png      # 任务1结果
+├── task2_order_parameter_comparison.png # 任务2结果
+├── task3_finite_size_scaling.png       # 任务3结果
+│
+├── requirements.txt
+└── README.md
+```
+
+## 主要类和函数 / Main Classes and Functions
+
+### `TransverseFieldIsingModel` 类
+
+```python
+class TransverseFieldIsingModel:
+    def __init__(self, params: TFIMParameters)
+    def build_hamiltonian(self, sparse=True)
+    def diagonalize(self, k=1)
+    def ground_state_energy()
+    def ground_state()
+    def magnetization(state=None)
+    def correlation_function(i, j, state=None)
+    def structure_factor(state=None)
+```
+
+### `MatrixProductState` 类
+
+```python
+class MatrixProductState:
+    def __init__(self, L, d=2, max_bond_dim=10)
+    def to_statevector()
+    def from_statevector(psi, max_bond_dim=None)
+    def bond_dimensions()
+    def entanglement_entropy(cut)
+```
+
+### `SimpleDMRG` 类
+
+```python
+class SimpleDMRG:
+    def __init__(self, params, max_bond_dim=10)
+    def run(n_sweeps=10, tol=1e-8)
+    def compute_magnetization()
+```
+
+### 分析函数 / Analysis Functions
+
+```python
+# 平均场临界指数
+compute_mean_field_exponents(h_values, L=10, bond_dim=1)
+
+# 结构因子序参量
+compute_structure_factor_order_parameter(L, h)
+
+# 有限尺寸标度
+finite_size_scaling_analysis(L_values, h_values, method='exact')
+```
+
+## 理论背景 / Theoretical Background
+
+### 量子相变 / Quantum Phase Transitions
+
+与经典相变不同，量子相变发生在绝对零度，由量子涨落驱动。
+
+Unlike classical phase transitions, quantum phase transitions occur at absolute zero temperature, driven by quantum fluctuations.
+
+### 普适性类 / Universality Class
+
+1D 横场伊辛模型属于 2D 经典伊辛模型的普适性类：
+- 临界维度：$d_c = 1$
+- 临界指数：$\beta = 1/8$, $\nu = 1$, $z = 1$
+
+The 1D TFIM belongs to the universality class of the 2D classical Ising model.
+
+### Jordan-Wigner 变换 / Jordan-Wigner Transformation
+
+TFIM 可以通过 Jordan-Wigner 变换映射到自由费米子系统，因此可以精确求解。
+
+The TFIM can be mapped to a free fermion system via the Jordan-Wigner transformation, making it exactly solvable.
+
+## 性能说明 / Performance Notes
+
+### 计算复杂度 / Computational Complexity
+
+| 方法 / Method | 时间复杂度 / Time | 空间复杂度 / Space | 最大系统尺寸 / Max L |
+|--------------|-------------------|-------------------|---------------------|
+| 精确对角化 / Exact | $O(2^{3L})$ | $O(2^{2L})$ | ~14 |
+| DMRG | $O(L \chi^3)$ | $O(L \chi^2)$ | ~100+ |
+| MPS/RG | $O(L \chi^3)$ | $O(L \chi^2)$ | ~100+ |
+
+其中 $\chi$ 是键维数 / where $\chi$ is the bond dimension.
+
+### 推荐设置 / Recommended Settings
+
+- **快速测试** / Quick test: L=4-8, 精确对角化
+- **标准分析** / Standard analysis: L=10-12, 精确对角化或 DMRG
+- **大系统** / Large systems: L>20, DMRG ($\chi \geq 20$)
+
+## 参考文献 / References
+
+### 张量网络 / Tensor Networks
+
+1. Orús, R. (2014). "A practical introduction to tensor networks: Matrix product states and projected entangled pair states." *Annals of Physics*, 349, 117-158.
+
 2. Schollwöck, U. (2011). "The density-matrix renormalization group in the age of matrix product states." *Annals of Physics*, 326(1), 96-192.
-3. Cardy, J. (1996). *Scaling and Renormalization in Statistical Physics*. Cambridge University Press.
 
-### 性能注意事项 / Performance Notes
+### 横场伊辛模型 / TFIM
 
-- 精确对角化计算复杂度：O(2^(3L)) / Exact diagonalization complexity: O(2^(3L))
-- 默认最大系统大小：L=12（4096维希尔伯特空间）/ Default maximum system size: L=12 (4096-dim Hilbert space)
-- 建议使用numpy/scipy优化版本 / Recommended to use optimized numpy/scipy
+3. Sachdev, S. (2011). *Quantum Phase Transitions* (2nd ed.). Cambridge University Press.
 
----
+4. Pfeuty, P. (1970). "The one-dimensional Ising model with a transverse field." *Annals of Physics*, 57(1), 79-90.
 
-## 项目总览 / Project Overview
+### 量子多体物理 / Quantum Many-Body Physics
 
-本仓库包含两个主要部分 / This repository contains two major parts:
+5. Fradkin, E. (2013). *Field Theories of Condensed Matter Physics* (2nd ed.). Cambridge University Press.
 
-1. **随机矩阵理论** / Random Matrix Theory
-   - 厄米矩阵特征值分析 / Hermitian matrix eigenvalue analysis
-   - Wigner-Dyson统计 / Wigner-Dyson statistics
+6. Amico, L., et al. (2008). "Entanglement in many-body systems." *Reviews of Modern Physics*, 80(2), 517.
 
-2. **量子多体系统** / Quantum Many-Body Systems
-   - 平均场理论 / Mean field theory
-   - 重整化群方法 / Renormalization group methods
-   - 精确对角化 / Exact diagonalization
+## 常见问题 / FAQ
+
+### Q: 为什么临界点在 h_c = 1？
+
+**A**: 对于 J=1 的情况，临界点出现在横场和伊辛相互作用强度相等时。可以通过精确的 Jordan-Wigner 变换求解验证。
+
+### Q: 为什么磁化强度有时显示为零？
+
+**A**: 在有限系统的精确对角化中，基态可能是两个简并态的对称叠加（Z2对称性），导致 $\langle \sigma^z \rangle = 0$。可以通过对称性破缺或计算关联函数来获得序参量。
+
+### Q: DMRG 和精确对角化的区别？
+
+**A**:
+- 精确对角化：计算所有 $2^L$ 个能级，精确但受限于小系统
+- DMRG：使用 MPS 压缩态空间，可以处理更大系统但有截断误差
+
+### Q: 如何选择键维数 χ？
+
+**A**:
+- m=1: 平均场近似
+- m=10-20: 适中精度，快速计算
+- m=50-100: 高精度，接近精确解（对 1D 系统）
+- 监控纠缠熵和能量收敛
